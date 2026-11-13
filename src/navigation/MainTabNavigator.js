@@ -1,14 +1,12 @@
-
+// src/navigation/MainTabNavigator.jsx
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
-// Импортируем наши экраны
 import HomeScreen from '../screens/HomeScreen';
 import LibraryScreen from '../screens/LibraryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-
 import { COLORS } from '../constants/colors';
 
 const Tab = createBottomTabNavigator();
@@ -24,15 +22,9 @@ export default function MainTabNavigator() {
         tabBarLabelStyle: styles.tabBarLabel,
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-
-          if (route.name === 'Home') {
-            iconName = focused ? 'moon' : 'moon-outline';
-          } else if (route.name === 'Library') {
-            iconName = focused ? 'library' : 'library-outline';
-          } else if (route.name === 'Settings') {
-            iconName = focused ? 'settings' : 'settings-outline';
-          }
-
+          if (route.name === 'Home') iconName = focused ? 'moon' : 'moon-outline';
+          else if (route.name === 'Library') iconName = focused ? 'library' : 'library-outline';
+          else if (route.name === 'Settings') iconName = focused ? 'settings' : 'settings-outline';
           return <Ionicons name={iconName} size={24} color={color} />;
         },
       })}
@@ -48,12 +40,9 @@ const styles = StyleSheet.create({
   tabBar: {
     backgroundColor: COLORS.SURFACE,
     borderTopWidth: 0,
-    height: 64,
-    paddingBottom: 8,
+    height: Platform.OS === 'ios' ? 84 : 64,
     paddingTop: 8,
+    paddingBottom: Platform.OS === 'ios' ? 24 : 8,
   },
-  tabBarLabel: {
-    fontSize: 12,
-    fontWeight: '500',
-  },
+  tabBarLabel: { fontSize: 11, fontWeight: '500', marginTop: 2 },
 });

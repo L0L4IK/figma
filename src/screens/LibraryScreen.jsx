@@ -1,24 +1,15 @@
 // src/screens/LibraryScreen.jsx
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, SafeAreaView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '../constants/colors';
 import SoundCard from '../components/domain/SoundCard';
 import { usePlayerStore } from '../store/usePlayerStore';
-import { MOCK_SOUNDS } from '../constants/mockSounds';
-import { Ionicons } from '@expo/vector-icons';
 
 export default function LibraryScreen({ navigation }) {
   const { favorites, playSound } = usePlayerStore();
 
-  // Фильтруем нашу базу звуков, оставляя только те, что в избранном
-  const favoriteSounds = MOCK_SOUNDS.filter(sound => favorites.includes(sound.id));
-
-  const handleSoundPress = (sound) => {
-    playSound(sound);
-    navigation.navigate('NowPlaying');
-  };
-
-  if (favoriteSounds.length === 0) {
+  if (favorites.length === 0) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -27,7 +18,7 @@ export default function LibraryScreen({ navigation }) {
         <View style={styles.emptyState}>
           <Ionicons name="heart-dislike-outline" size={64} color={COLORS.TEXT_MUTED} />
           <Text style={styles.emptyTitle}>Пока пусто</Text>
-          <Text style={styles.emptySubtitle}>Добавляйте звуки в избранное, нажимая на сердечко</Text>
+          <Text style={styles.emptySubtitle}>Добавляйте звуки в избранное, нажимая на сердечко в плеере</Text>
         </View>
       </SafeAreaView>
     );
@@ -37,12 +28,12 @@ export default function LibraryScreen({ navigation }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Избранное</Text>
-        <Text style={styles.count}>{favoriteSounds.length} звуков</Text>
+        <Text style={styles.count}>{favorites.length} звуков</Text>
       </View>
       
       <FlatList
-        data={favoriteSounds}
-        keyExtractor={(item) => item.id}
+        data={favorites}
+        keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
@@ -50,7 +41,10 @@ export default function LibraryScreen({ navigation }) {
             title={item.title} 
             subtitle={item.subtitle}
             iconName={item.iconName}
-            onPress={() => handleSoundPress(item)}
+            onPress={() => {
+              playSound(item);
+              navigation.navigate('NowPlaying');
+            }}
           />
         )}
       />

@@ -1,10 +1,7 @@
-// App.js
 import React from 'react';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-
-// МЕНЯЕМ ИМПОРТ ЗДЕСЬ:
 import RootStack from './src/navigation/RootStack';
 import { COLORS } from './src/constants/colors';
 
@@ -24,8 +21,7 @@ export default function App() {
     <SafeAreaProvider>
       <NavigationContainer theme={navTheme}>
         <StatusBar style="light" />
-        {/* И ЗДЕСЬ: */}
-        <RootStack /> 
+        <RootStack />
       </NavigationContainer>
     </SafeAreaProvider>
   );
